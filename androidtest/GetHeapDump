@@ -1,0 +1,86 @@
+
+import android.app.Activity;
+import android.os.SystemClock;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.Espresso;
+import android.support.test.rule.ActivityTestRule;
+
+import com.mmt.travel.app.androidMain.NFR.MemoryImpl.GetMemory;
+import com.mmt.travel.app.androidMain.NFR.NFRFuntions.Lob;
+import com.mmt.travel.app.androidMain.com.mmt.po.PageObjectFactory;
+import com.mmt.travel.app.androidMain.commonPage.CommonHomePage;
+import com.mmt.travel.app.androidMain.commonPage.OnBoardingPage;
+import com.mmt.travel.app.androidMain.flightsPage.FlightBasePage;
+import com.mmt.travel.app.androidMain.utilities.idlingResourceUtils.BaseIdlingResource;
+import com.mmt.travel.app.androidTest.baseTest.BaseTest;
+import com.mmt.travel.app.common.util.LogUtils;
+import com.mmt.travel.app.home.ui.SplashActivity;
+import com.mmt.travel.app.mobile.MMTApplication;
+
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runners.MethodSorters;
+
+import static com.mmt.travel.app.androidMain.utilities.pageELementsUtils.MobileElementHelper.getActivityInstance;
+
+
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+public class HomePageTest   {
+
+    private static final String TAG = "AppHomePage";
+    static OnBoardingPage onBoardingPage;
+    static CommonHomePage commonHomePage;
+
+
+    private BaseIdlingResource baseIdlingResource;
+    @Rule
+    public ActivityTestRule<SplashActivity> mActivityTestRule = new ActivityTestRule<SplashActivity>(SplashActivity.class);
+    //Set retry count argument
+    /*@Rule
+    public RetryRule retryRule = new RetryRule(1);*/
+
+
+    @BeforeClass
+    public static void initializePageObjects() {
+        onBoardingPage = PageObjectFactory.getOnBoardingPage();
+        commonHomePage = PageObjectFactory.getCommonHomePage();
+    }
+    Activity activity;
+    @Before
+    public void setActivity(){
+        activity = getActivityInstance();
+        ((MMTApplication) InstrumentationRegistry.getTargetContext().getApplicationContext()).setCurrentActivity(activity);
+
+    }
+
+    @Test
+    @Lob(stringValue = "Common_Welcome")
+    public void a_verifyWelcomeScreenOpen() {
+        Activity activity = getActivityInstance();
+        String name = activity.getLocalClassName();
+        if (name.equalsIgnoreCase("com.mmt.travel.app.homepage.activity.OnBoardingActivity")) {
+            onBoardingPage.verifyWelcomeScreen();
+        }
+        else
+            LogUtils.error("WelcomeScreen","Welcome Screen not opened");
+    }
+
+
+    @Test
+    @Lob(stringValue = "Common_HomePage")
+    public void b_verifyHomePageOpen() {
+        Activity homeActivity = getActivityInstance();
+        baseIdlingResource = new BaseIdlingResource(homeActivity);
+        Espresso.registerIdlingResources(baseIdlingResource);
+        SystemClock.sleep(1000);
+        onBoardingPage.verifyElements();
+        SystemClock.sleep(3000);
+        Espresso.unregisterIdlingResources(baseIdlingResource);
+        GetMemory.getHeapDump("HomePage");
+    }
+   
+
+}
