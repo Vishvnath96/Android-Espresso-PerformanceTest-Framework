@@ -5,12 +5,12 @@ package com.mmt.travel.app.androidMain.NFR.NFRUtils;
  */
 
 public enum ApiUrls {
-    MemoryUsageUrl("http://appnfr.makemytrip.com/androidmemoryusage"),
-    CpuUsageUrl("http://appnfr.makemytrip.com/androidcpuusage"),
-    NetworkUsageUrl("http://appnfr.makemytrip.com/androidnetworkusage"),
-    GetNetworkDataUrl("http://172.16.94.219:8080/getnetworkdata"),
-    GetCPUDataUrl("http://172.16.94.219:8080/getcpudata"),
-    GetMemoryDataUrl("http://172.16.94.219:8080/getmemorydata");
+    MemoryUsageUrl("http://172.16.94.219/androidmemoryusage"),
+    CpuUsageUrl("http://172.16.94.219/androidcpuusage"),
+    NetworkUsageUrl("http://172.16.94.219/androidnetworkusage"),
+    GetNetworkDataUrl("http://172.16.94.219/getnetworkdata"),
+    GetCPUDataUrl("http://172.16.94.219/getcpudata"),
+    GetMemoryDataUrl("http://172.16.94.219/getmemorydata");
     String value;
     private ApiUrls(String url) {
         value = url;
