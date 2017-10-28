@@ -1,0 +1,144 @@
+
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Debug;
+import android.preference.PreferenceManager;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.Espresso;
+import android.support.test.espresso.base.DefaultFailureHandler;
+
+import com.mmt.travel.app.androidMain.NFR.CPUImpl.CPUHelper;
+import com.mmt.travel.app.androidMain.NFR.MemoryImpl.MemoryNFRHelper;
+import com.mmt.travel.app.androidMain.NFR.NFRFuntions.Functionality;
+import com.mmt.travel.app.androidMain.NFR.NFRFuntions.Lob;
+import com.mmt.travel.app.androidMain.NFR.NFRFuntions.NFRHelper;
+import com.mmt.travel.app.androidMain.NFR.NetworkDataImpl.NetworkDataHelper;
+import com.mmt.travel.app.androidMain.NFR.NetworkDataPojo.NetworkDataManager;
+
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.rules.TestName;
+import org.junit.rules.TestRule;
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
+import org.junit.runner.notification.Failure;
+import org.junit.runner.notification.RunListener;
+import org.junit.runners.model.Statement;
+
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.sql.SQLException;
+
+import static android.support.test.InstrumentationRegistry.getTargetContext;
+import static com.mmt.travel.app.androidMain.utilities.pageELementsUtils.MobileElementHelper.getActivityInstance;
+
+public class BaseTest extends RunListener {
+
+    static Context context = InstrumentationRegistry.getTargetContext().getApplicationContext();
+    public static Lob annotation;
+
+
+    @Rule
+    public TestName testName = new TestName();
+
+    @Rule
+    public TestRule rule = new TestWatcher() {
+
+
+        @Override
+        protected void failed(Throwable e, Description description) {
+            System.out.println("Failed " + description);
+            System.out.println("cannot dump data for failure case...");
+        }
+
+        @Override
+        protected void finished(Description description) {
+            System.out.println("Finished " + description + "\n");
+        }
+
+        @Override
+        protected void starting(Description description) {
+            System.out.println("Starting " + description);
+        }
+
+        @Override
+        protected void succeeded(Description description) {
+            System.out.println("Passed " + description);
+            System.out.println("NFR dumping data started for : " + testName.getMethodName());
+            String[] statusArray = {NFRHelper.getDeviceUDID(context), testName.getMethodName().substring(2), annotation.stringValue()};
+            MemoryNFRHelper memoryNFRHelper = new MemoryNFRHelper();
+            CPUHelper cpuHelper = new CPUHelper();
+            NetworkDataHelper networkDataHelper = new NetworkDataHelper();
+            try {
+                memoryNFRHelper.perform(Functionality.COLLECT, statusArray, context);
+                cpuHelper.perform(Functionality.COLLECT, statusArray, context);
+                networkDataHelper.perform(Functionality.COLLECT, statusArray, context);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    /*@Rule
+    public RetryRule retryRule = new RetryRule(2) {
+        private int retryCount = 2;
+
+        public Statement apply(Statement base, Description description) {
+            return statement(base, description);
+        }
+
+        private Statement statement(final Statement base, final Description description) {
+            return new Statement() {
+                @Override
+                public void evaluate() throws Throwable {
+                    Throwable caughtThrowable = null;
+
+                    // implementation of  retry logic
+                    for (int i = 0; i < retryCount; i++) {
+                        try {
+                            base.evaluate();
+                            return;
+                        } catch (Throwable t) {
+                            caughtThrowable = t;
+                            //  System.out.println(": run " + (i+1) + " failed");
+                            System.err.println(description.getDisplayName() + ": run " + (i + 1) + " failed.");
+                        }
+                    }
+                    System.err.println(description.getDisplayName() + ": giving up after " + retryCount + " failures.");
+                    throw caughtThrowable;
+                }
+            };
+        }
+    };
+*/
+    @After
+    public void testFinished() throws Exception {
+        System.out.println("NFR dumping data started for : " + testName.getMethodName());
+        Method method = this.getClass().getMethod(this.testName.getMethodName());
+        annotation = method.getAnnotation(Lob.class);
+    }
+
+    @Before
+    public  void clearAppDataBeforeTest(){
+        Activity mActivity = getActivityInstance();
+        Debug.getNativeHeapFreeSize();//16497712
+        Debug.getNativeHeapSize();//27518568
+        SharedPreferences prefs =
+                PreferenceManager.getDefaultSharedPreferences(mActivity);
+        prefs.edit().clear().commit();
+        mActivity.deleteDatabase("makemytrip.db");
+        System.runFinalization();
+        Runtime.getRuntime().gc();
+        System.gc();
+        Debug.getNativeHeapFreeSize();//18387008
+        Debug.getNativeHeapSize();//28789192
+    }
+
+
+}
