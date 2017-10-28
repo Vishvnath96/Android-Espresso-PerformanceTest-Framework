@@ -1,0 +1,181 @@
+import android.support.test.rule.ActivityTestRule;
+
+import com.mmt.travel.app.androidMain.NFR.NFRFuntions.Lob;
+import com.mmt.travel.app.androidMain.com.mmt.po.PageObjectFactory;
+import com.mmt.travel.app.androidMain.flightsPage.FlightDetailPage;
+import com.mmt.travel.app.androidMain.flightsPage.FlightLandingPage;
+import com.mmt.travel.app.androidMain.flightsPage.FlightListingPage;
+import com.mmt.travel.app.androidMain.flightsPage.FlightReviewPage;
+import com.mmt.travel.app.androidTest.baseTest.BaseTest;
+import com.mmt.travel.app.androidTest.baseTest.RetryRule;
+import com.mmt.travel.app.flight.ui.search.flightsearch.FlightSearch;
+
+import junit.framework.Assert;
+
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runners.MethodSorters;
+
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+public class FlightTests extends BaseTest {
+
+    @Test
+    @Lob(stringValue = "Flight_LandingPage")
+    public void d_selectRecentSearches(){
+        flightLandingPage.selectRecentSearches();
+    }
+    static FlightLandingPage flightLandingPage;
+    static FlightListingPage flightListingPage;
+    static FlightDetailPage flightDetailPage;
+
+    static FlightReviewPage flightReviewPage;
+
+
+    @Rule
+    public ActivityTestRule<FlightSearch> activityActivityTestRule = new ActivityTestRule<FlightSearch>(FlightSearch.class);
+
+    @BeforeClass
+    public static void initializePageObjects() {
+        flightLandingPage = PageObjectFactory.getFlightLandingPage();
+        flightDetailPage = PageObjectFactory.getFlightDetailPage();
+        flightListingPage = PageObjectFactory.getFlightListingPage();
+        flightReviewPage = PageObjectFactory.getFlightReviewPage();
+    }
+
+    @Test
+    @Lob(stringValue = "Flight_LandingPage")
+    public void a_openFltLandingPage() {
+       Assert.assertEquals("Hotel Landing page elements verified", true, flightLandingPage.verifyLandingPageElements());
+    }
+
+    @Test
+    @Lob(stringValue = "Flight_LandingPage")
+    public void b_selectTwoWayFlight(){
+       flightLandingPage.selectTwoWayFlight();
+    }
+
+
+    @Test
+    @Lob(stringValue = "Flight_LandingPage")
+    public void c_addMoreAdultFlight(){
+        flightLandingPage.addMoreAdult();
+    }
+
+    @Test
+    @Lob(stringValue = "Flight_ListingPage")
+    public void e_openFltListingPage(){
+        flightListingPage.openListingPagefromLanding();
+    }
+
+    @Test
+    @Lob(stringValue = "Flight_ListingPage")
+    public void f_scrollFltListingPage() {
+        flightListingPage.openListingPagefromLanding();
+        flightListingPage.scrollFlightOnlistingPage(4);
+    }
+
+    @Test
+    @Lob(stringValue = "Flight_ListingPage")
+    public void g_sortFlightByPrice(){
+        flightListingPage.openListingPagefromLanding();
+        flightListingPage.sortFlightByPrice();
+    }
+
+    @Test
+    @Lob(stringValue = "Flight_ListingPage")
+    public void h_sortFlightByDepartureTime(){
+        flightListingPage.openListingPagefromLanding();
+        flightListingPage.sortFlightByDepartureTime();
+    }
+
+    @Test
+    @Lob(stringValue = "Flight_ListingPage")
+    public void i_sortFlightByDuration(){
+        flightListingPage.openListingPagefromLanding();
+        flightListingPage.sortFlightByDuration();
+    }
+
+    @Test
+    @Lob(stringValue = "Flight_ListingPage")
+    public void j_filterFliteForZeroStop(){
+        flightListingPage.openListingPagefromLanding();
+        flightListingPage.fliterFlightByZeroStop();
+
+    }
+
+    @Test
+    @Lob(stringValue = "Flight_ListingPage")
+    public void k_filterFliteForOneStop(){
+        flightListingPage.openListingPagefromLanding();
+        flightListingPage.fliterFlightByOneStop();
+
+    }
+
+    @Test
+    @Lob(stringValue = "Flight_DetailPage")
+    public void l_openFlightDetailPage() throws Exception {
+         flightDetailPage.openFlightDetailPage();
+         flightDetailPage.verifyFlightDetailElements();
+    }
+
+    @Test
+    @Lob(stringValue = "Flight_DetailPage")
+    public void m_scrollDownDetailPage() throws Exception {
+        flightDetailPage.openFlightDetailPage();
+        flightDetailPage.scrollDownTillEnd();
+    }
+
+    @Test
+    @Lob(stringValue = "Flight_DetailPage")
+    public void n_verifyViewFareOnDetailPage() throws Exception {
+        flightDetailPage.openFlightDetailPage();
+        flightDetailPage.verifyViewFare();
+    }
+
+    @Test
+    @Lob(stringValue = "Flight_ReviewPage")
+    public void o_openFlightReviewPage() throws Exception {
+        flightReviewPage.openFlightReviewPage();
+        flightReviewPage.verifyFlightReviewPageElements();
+
+    }
+
+    @Test
+    @Lob(stringValue = "Flight_ReviewPage")
+    public void p_verifyTrvlerDtlOnReviewPage() throws Exception {
+        flightReviewPage.openFlightReviewPage();
+        flightReviewPage.getTravellerDetails();
+
+    }
+
+    @Test
+    @Lob(stringValue = "Flight_ReviewPage")
+    public void q_addAdultOnFltReviewPage() throws Exception {
+        flightReviewPage.openFlightReviewPage();
+        flightReviewPage.addTraveller();
+
+    }
+
+    @Test
+    @Lob(stringValue = "Flight_ReviewPage")
+    public void r_openInsurancAgreeReviewPage() throws Exception {
+        flightReviewPage.openFlightReviewPage();
+        flightReviewPage.addTraveller();
+        flightReviewPage.openInsurancePage();
+
+    }
+
+    @Test
+    @Lob(stringValue = "Flight_Review_MealPage")
+    public void s_openMealReviewPage() throws Exception {
+        flightReviewPage.openFlightReviewPage();
+        flightReviewPage.addTraveller();
+        flightReviewPage.openInsurancePage();
+        //flightReviewPage.clickOnAgree();
+        //flightReviewPage.clickOnBookFlight();
+
+    }
+}
