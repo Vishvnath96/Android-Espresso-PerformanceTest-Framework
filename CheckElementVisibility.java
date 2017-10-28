@@ -1,0 +1,166 @@
+package com.mmt.travel.app.androidMain.utilities.pageELementsUtils;
+
+import android.support.annotation.CheckResult;
+import android.support.test.espresso.AmbiguousViewMatcherException;
+import android.support.test.espresso.NoMatchingRootException;
+import android.support.test.espresso.NoMatchingViewException;
+import android.support.test.espresso.UiController;
+import android.support.test.espresso.ViewAction;
+import android.support.test.espresso.ViewAssertion;
+import android.support.test.espresso.ViewInteraction;
+import android.support.test.espresso.matcher.ViewMatchers;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
+
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
+
+import java.util.NoSuchElementException;
+
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.assertThat;
+import static org.hamcrest.Matchers.anything;
+import static org.hamcrest.core.IsInstanceOf.any;
+
+/**
+ * Created by MMT6054 on 16-Aug-17.
+ */
+
+public class CheckElementVisibility {
+    //onView(withId(R.id.text_message)).check(isVisible());
+    //to verify the visibility of view
+    public static ViewAssertion isVisible() {
+        return new ViewAssertion() {
+            public void check(View view, NoMatchingViewException noView) {
+                assertThat(view, new VisibilityMatcher(View.VISIBLE));
+            }
+        };
+    }
+
+    //to verify the visibility has gone of view
+    public static ViewAssertion isGone() {
+        return new ViewAssertion() {
+            public void check(View view, NoMatchingViewException noView) {
+                assertThat(view, new VisibilityMatcher(View.GONE));
+            }
+        };
+    }
+
+    //to verify the visibility is invisible of view ,use when view is definitely going to visible
+    public static ViewAssertion isInvisible() {
+        return new ViewAssertion() {
+            public void check(View view, NoMatchingViewException noView) {
+                assertThat(view, new VisibilityMatcher(View.INVISIBLE));
+            }
+        };
+    }
+
+    private static class VisibilityMatcher extends BaseMatcher<View> {
+
+        private int visibility;
+
+        public VisibilityMatcher(int visibility) {
+            this.visibility = visibility;
+        }
+
+        @Override
+        public void describeTo(Description description) {
+            String visibilityName;
+            if (visibility == View.GONE) visibilityName = "GONE";
+            else if (visibility == View.VISIBLE) visibilityName = "VISIBLE";
+            else visibilityName = "INVISIBLE";
+            description.appendText("View visibility must has equals " + visibilityName);
+        }
+
+        @Override
+        public boolean matches(Object o) {
+
+            if (o == null) {
+                if (visibility == View.GONE || visibility == View.INVISIBLE) return true;
+                else if (visibility == View.VISIBLE) return false;
+            }
+
+            if (!(o instanceof View))
+                throw new IllegalArgumentException("Object must be instance of View. Object is instance of " + o);
+            return ((View) o).getVisibility() == visibility;
+        }
+    }
+
+    public static boolean isElementPresent(ViewInteraction elementId) {
+        //onView(withId(R.id.text_message)).check(isVisible());
+
+        try{
+        if (elementId.check(isVisible()) != null) {
+            return true;
+        }
+        else if(elementId.check(isVisible()) == null){
+            return false;
+        }
+        else if(elementId.check(isInvisible()) != null){
+            return false;
+        }
+        }catch(NoSuchElementException e){
+            e.printStackTrace();
+            e.getMessage();
+        }
+        return false;
+    }
+
+    //for hamcrest matching option ,identifying elements by using its child position
+    public static Matcher<View> childAtPosition(
+            final Matcher<View> parentMatcher, final int position) {
+
+        return new TypeSafeMatcher<View>() {
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("Child at position " + position + " in parent ");
+                parentMatcher.describeTo(description);
+            }
+
+            @Override
+            public boolean matchesSafely(View view) {
+                ViewParent parent = view.getParent();
+                return parent instanceof ViewGroup && parentMatcher.matches(parent)
+                        && view.equals(((ViewGroup) parent).getChildAt(position));
+            }
+        };
+    }
+
+
+    //to verify existence of view on hide activity or visible activity
+    @CheckResult
+    public static boolean exists(ViewInteraction interaction) {
+        try {
+            interaction.perform(new ViewAction() {
+                @Override public Matcher<View> getConstraints() {
+                    return any(View.class);
+                }
+                @Override public String getDescription() {
+                    return "check for existence";
+                }
+                @Override public void perform(UiController uiController, View view) {
+                    // no op, if this is run, then the execution will continue after .perform(...)
+                }
+            });
+            return true;
+        } catch (AmbiguousViewMatcherException ex) {
+            // if there's any interaction later with the same matcher, that'll fail anyway
+            return true; // we found more than one
+        } catch (NoMatchingViewException ex) {
+            return false;
+        } catch (NoMatchingRootException ex) {
+            // optional depending on what you think "exists" means
+            return false;
+        }
+    }
+
+    //for matching view with anything it contains
+    public static ViewAssertion elementExists() {
+        return matches(anything());
+    }
+
+}
+

@@ -1,0 +1,129 @@
+package com.mmt.travel.app.androidMain.NFR.MemoryPojo;
+
+/**
+ * Created by MMT6054 on 09-Jul-17.
+ */
+
+public class MemoryNFRManager {
+
+    //getting memory usage data in different way some variable added to get data
+    private String methodName;
+    private String deviceId;
+    private String apkVersion;
+    private String lobName;
+    private String timeStamp;
+    private double nativeHeapUsed;
+    private double nativeHeapfree;
+    private double dalvikPSS;
+    private double dalvikShared;
+    private double dalvikPrivate;
+    private double usedTotalMemoryInMB;
+    private double maxTotalHeapSizeInMB;
+    private double availableTotalHeapSizeInMB;
+
+
+    public double getDalvikPSS() {
+        return dalvikPSS;
+    }
+
+    public void setDalvikPSS(double dalvikPSS) {
+        this.dalvikPSS = dalvikPSS;
+    }
+
+    public double getDalvikShared() {
+        return dalvikShared;
+    }
+
+    public void setDalvikShared(double dalvikShared) {
+        this.dalvikShared = dalvikShared;
+    }
+
+    public double getDalvikPrivate() {
+        return dalvikPrivate;
+    }
+
+    public void setDalvikPrivate(double dalvikPrivate) {
+        this.dalvikPrivate = dalvikPrivate;
+    }
+
+    public double getNativeHeapUsed() {
+        return nativeHeapUsed;
+    }
+
+    public void setNativeHeapUsed(double nativeHeapUsed) {
+        this.nativeHeapUsed = nativeHeapUsed;
+    }
+
+    public double getNativeHeapfree() {
+        return nativeHeapfree;
+    }
+
+    public void setNativeHeapfree(double nativeHeapfree) {
+        this.nativeHeapfree = nativeHeapfree;
+    }
+
+
+    public double getUsedTotalMemoryInMB() {
+        return usedTotalMemoryInMB;
+    }
+
+    public void setUsedTotalMemoryInMB(double usedTotalMemoryInMB) {
+        this.usedTotalMemoryInMB = usedTotalMemoryInMB;
+    }
+
+    public double getMaxTotalHeapSizeInMB() {
+        return maxTotalHeapSizeInMB;
+    }
+
+    public void setMaxTotalHeapSizeInMB(double maxTotalHeapSizeInMB) {
+        this.maxTotalHeapSizeInMB = maxTotalHeapSizeInMB;
+    }
+
+    public double getAvailableTotalHeapSizeInMB() {
+        return availableTotalHeapSizeInMB;
+    }
+
+    public void setAvailableTotalHeapSizeInMB(double availableTotalHeapSizeInMB) {
+        this.availableTotalHeapSizeInMB = availableTotalHeapSizeInMB;
+    }
+
+    public String getMethodName() {
+        return methodName;
+    }
+
+    public void setMethodName(String methodName) {
+        this.methodName = methodName;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    public String getApkVersion() {
+        return apkVersion;
+    }
+
+    public void setApkVersion(String apkVersion) {
+        this.apkVersion = apkVersion;
+    }
+
+    public String getLobName() {
+        return lobName;
+    }
+
+    public void setLobName(String lobName) {
+        this.lobName = lobName;
+    }
+
+    public String getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(String timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+}
