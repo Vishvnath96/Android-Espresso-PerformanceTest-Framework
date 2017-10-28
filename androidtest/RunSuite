@@ -1,0 +1,32 @@
+
+import junit.framework.TestCase;
+
+import org.junit.AfterClass;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
+
+@RunWith(Suite.class)
+@SuiteClasses({HomePageTest1.class,FlightTests.class,HotelTests.class})
+public class RunSuite extends TestCase{
+
+
+
+    @AfterClass
+    public static void oneTimeTeardown() {
+        try{
+            Runtime runtime = Runtime.getRuntime();
+            System.out.println("After Suite");
+            runtime.exec("pm clear com.makemytrip");
+            System.out.println("Cleared App Data");
+            //Runtime.getRuntime().exec(new String[]{"/system/bin/su","-c","reboot now"});
+            Runtime.getRuntime().exec(new String[]{"su","-c","reboot now"});
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+}
+
+
+
+
