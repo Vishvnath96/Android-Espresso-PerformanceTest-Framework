@@ -1,0 +1,6 @@
+/*implements default behaviour for the interface common to all classes as appropriate;
+declares an interface for accessing and managing its child components*/
+public interface NFR
+{
+    public void perform(Functionality functionality, String statusArray[], Statement statement);
+}
