@@ -1,0 +1,24 @@
+//for getting method trace data
+    public static void getTrace(String activityName) {
+        try {
+            Debug.startMethodTracing(activityName, 6 * 1024 * 1024);
+            System.out.println("method tracing started ....");
+            Thread.sleep(4000);
+            stopTrace();
+        } catch (Exception e) {
+            e.getMessage();
+            e.printStackTrace();
+        }
+        stopTrace();
+    }
+
+    //for stopping method trace data
+    public static void stopTrace() {
+        try {
+            Debug.stopMethodTracing();
+            System.out.println("method tracing end");
+        } catch (Exception e) {
+            e.getMessage();
+            e.printStackTrace();
+        }
+    }
