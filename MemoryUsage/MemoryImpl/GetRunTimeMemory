@@ -1,0 +1,64 @@
+private static final String TAG = "DUMP";
+    static long usedMemoryInMB;
+    static long maxHeapSizeInMB;
+    static long availableHeapSizeInMB;
+    public static String uniqueDumpFilename;
+
+    public static void getMemoryUsage() {
+        Runtime runtime = Runtime.getRuntime();
+        usedMemoryInMB = (runtime.totalMemory() - runtime.freeMemory()) / 1048576L;
+        maxHeapSizeInMB = runtime.maxMemory() / 1048576L;
+        availableHeapSizeInMB = maxHeapSizeInMB - usedMemoryInMB;
+        System.out.println("usedMemInMB " + usedMemoryInMB);
+        System.out.println("maxHeapSizeInMB " + maxHeapSizeInMB);
+        System.out.println("availHeapSizeInMB " + availableHeapSizeInMB);
+    }
+
+    public static void getHeapDump(String activityName) {
+        uniqueDumpFilename = uniqueString();
+        String ext = "hprof";
+        String temp = "/sdcard";
+        String filename = String.format("%s.%s", activityName, ext);
+        temp = temp + File.separator + filename;
+        Log.i(TAG, "Dumping Data...");
+        try {
+            Debug.dumpHprofData(temp);
+        } catch (IOException e) {
+            e.printStackTrace();
+            e.getMessage();
+        }
+        Log.i(TAG, "Dumping Dumped successfully");
+        SystemClock.sleep(TimeUnit.SECONDS.toMillis(2));
+    }
+
+
+    public static void getMemoryInfo() {
+        Debug.MemoryInfo mi = new Debug.MemoryInfo();
+        Debug.getMemoryInfo(mi);
+        System.out.println(mi.dalvikPrivateDirty);
+        System.out.println(mi.nativePrivateDirty);
+
+
+    }
+
+    //for extracting dalvik usage data by using  activity manager thats why we are sending application context to get running running process
+    public static void getMem(Context context1, MemoryNFRManager memoryNFRManager) {
+        Context context = context1.getApplicationContext();
+        ActivityManager mgr = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> processes = mgr.getRunningAppProcesses();
+        Log.e("DEBUG", "Running processes:");
+        for (Iterator i = processes.iterator(); i.hasNext(); ) {
+            ActivityManager.RunningAppProcessInfo p = (ActivityManager.RunningAppProcessInfo) i.next();
+            Log.e("DEBUG", "  process name: " + p.processName);
+            Log.e("DEBUG", "     pid: " + p.pid);
+            int[] pids = new int[1];
+            pids[0] = p.pid;
+            Debug.MemoryInfo[] MI = mgr.getProcessMemoryInfo(pids);
+            Log.e("memory", "     dalvik private: " + MI[0].dalvikPrivateDirty);
+            Log.e("memory", "     dalvik shared: " + MI[0].dalvikSharedDirty);
+            Log.e("memory", "     dalvik pss: " + MI[0].dalvikPss);
+            memoryNFRManager.setDalvikPrivate(MI[0].dalvikPrivateDirty);
+            memoryNFRManager.setDalvikShared(MI[0].dalvikSharedDirty);
+            memoryNFRManager.setDalvikPSS(MI[0].dalvikPss);
+        }
+    }
