@@ -1,0 +1,83 @@
+public class MobileElementHelper {
+
+    //for getting activity instance on running activity in test class to use activity and its components info
+    public static Activity getActivityInstance() {
+        final Activity[] activity = new Activity[1];
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
+            @Override
+            public void run() {
+                Activity currentActivity = null;
+                Collection resumedActivities = ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(RESUMED);
+                if (HotelUtils.isNotEmptyCollection(resumedActivities)
+                        && resumedActivities.iterator().hasNext()) {
+                    currentActivity = (Activity) resumedActivities.iterator().next();
+                    activity[0] = currentActivity;
+                }
+            }
+        });
+        return activity[0];
+    }
+
+    //for swiping top to bottom for any open page
+    public static void swipeFromTopToBottom(Matcher<View> bestDeal, int count) throws InterruptedException {
+        for (int i = 0; i < count; i++) {
+            onView(bestDeal)
+                    .perform(withCustomConstraints(swipeUp(), isDisplayingAtLeast(85)));
+            Thread.sleep(1000);
+        }
+        SystemClock.sleep(4000);
+        onView(withText("Super Offers")).perform(ViewActions.scrollTo()).check(matches(isDisplayed()));
+        SystemClock.sleep(3000);
+    }
+
+
+
+    //custom constraint for scrolling page up down
+    public static ViewAction withCustomConstraints(final ViewAction action, final Matcher<View> constraints) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return constraints;
+            }
+
+            @Override
+            public String getDescription() {
+                return action.getDescription();
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                action.perform(uiController, view);
+            }
+        };
+    }
+
+
+    public static final class ScrollToPositionViewAction implements ViewAction {
+        private final int position;
+
+        public ScrollToPositionViewAction(int position) {
+            this.position = position;
+        }
+
+        public Matcher<View> getConstraints() {
+            return Matchers.allOf(new Matcher[]{
+                    ViewMatchers.isAssignableFrom(RecyclerView.class), ViewMatchers.isDisplayed()
+            });
+        }
+
+        public String getDescription() {
+            return "scroll RecyclerView to position: " + this.position;
+        }
+
+        public void perform(UiController uiController, View view) {
+            RecyclerView recyclerView = (RecyclerView) view;
+            recyclerView.scrollToPosition(this.position);
+        }
+
+    }
+
+    //verifying RecyclerView items and its functions
+    public static RecyclerViewMatcher withRecyclerView(final int recyclerViewId) {
+        return new RecyclerViewMatcher(recyclerViewId);
+    }
