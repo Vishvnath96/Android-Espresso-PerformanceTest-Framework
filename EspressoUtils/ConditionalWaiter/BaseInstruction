@@ -1,0 +1,24 @@
+/*Ui thread will wait until desired view or elements are visible on launching activity
+ */
+public class BaseInstruction extends Instruction {
+
+    int findById ;
+    public BaseInstruction(int  findById){
+        this.findById = findById;
+    }
+
+    @Override
+    public String getDescription() {
+        return "View identify with desired property";
+    }
+
+    @Override
+    public boolean checkCondition() {
+        Activity activity = ((Application)
+                InstrumentationRegistry.getTargetContext().getApplicationContext()).getCurrentActivity();
+        if (activity == null) return false;
+        //TextView btnStart = (TextView) activity.findViewById(R.id.BtnSearch);
+        View view = activity.findViewById(findById);
+        return view != null;
+    }
+}
