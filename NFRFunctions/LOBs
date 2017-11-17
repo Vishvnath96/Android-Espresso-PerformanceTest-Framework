@@ -1,0 +1,5 @@
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD) //can use in method only.
+public @interface Lob{
+    String stringValue();
+}
