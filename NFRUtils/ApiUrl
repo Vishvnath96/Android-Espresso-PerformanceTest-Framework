@@ -1,0 +1,13 @@
+public enum ApiUrls {
+    MemoryUsageUrl("http://xxx.xxx.com/androidmemoryusage"),
+    CpuUsageUrl("http://xxx.xxx.com/androidcpuusage"),
+    NetworkUsageUrl("http://xxx.xxx.com/androidnetworkusage"),
+    GetNetworkDataUrl("http://112.16.94.219:8080/getnetworkdata"),
+    GetCPUDataUrl("http://112.16.94.219:8080/getcpudata"),
+    GetMemoryDataUrl("http://112.16.94.219:8080/getmemorydata");
+    String value;
+    private ApiUrls(String url) {
+        value = url;
+    }
+
+}
