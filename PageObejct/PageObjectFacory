@@ -1,0 +1,81 @@
+//HOTEL PAGE OBJECTS
+    private static HotelBasePage hotelBasePage = null;
+
+    public static HotelBasePage getHotelBasePage(){
+        if(hotelBasePage == null){
+            hotelBasePage = new HotelBasePage();
+        }
+        return hotelBasePage;
+    }
+
+    private static HotelDetailPage hotelDetailPage = null;
+
+    public static HotelDetailPage getHotelDetailPage(){
+        if(hotelDetailPage == null){
+            hotelDetailPage = new HotelDetailPage();
+        }
+        return hotelDetailPage;
+    }
+
+    private static CommonHomePage commonHomePage= null;
+
+    public static CommonHomePage getCommonHomePage(){
+        if(commonHomePage == null){
+            commonHomePage = new CommonHomePage();
+        }
+        return commonHomePage;
+    }
+
+    private static OnBoardingPage onBoardingPage = null;
+
+    public static OnBoardingPage getOnBoardingPage(){
+        if(onBoardingPage == null){
+            onBoardingPage = new OnBoardingPage();
+        }
+        return onBoardingPage;
+    }
+
+    private static FlightBasePage flightBasePage;
+
+    public static FlightBasePage getFlightBasePage(){
+        if(flightBasePage == null){
+            flightBasePage = new FlightBasePage();
+        }
+        return flightBasePage;
+    }
+
+    private static HotelLandingPage hotelLandingPage;
+
+    public static HotelLandingPage getHotelLandingPage(){
+        if(hotelLandingPage == null){
+            hotelLandingPage = new HotelLandingPage();
+        }
+        return hotelLandingPage;
+    }
+
+    private static HotelListingPage hotelListingPage;
+
+    public static HotelListingPage getHotelListingPage(){
+        if(hotelListingPage == null){
+            hotelListingPage = new HotelListingPage();
+        }
+        return hotelListingPage;
+    }
+
+    private static HotelSelectRomPage hotelSelectRomPage;
+
+    public static HotelSelectRomPage getHotelSelectRomPage(){
+        if(hotelSelectRomPage == null){
+            hotelSelectRomPage = new HotelSelectRomPage();
+        }
+        return hotelSelectRomPage;
+    }
+
+    private static HotelReviewPage hotelReviewPage;
+
+    public static HotelReviewPage getHotelReviewPage(){
+        if(hotelReviewPage == null){
+            hotelReviewPage = new HotelReviewPage();
+        }
+        return hotelReviewPage;
+    }
