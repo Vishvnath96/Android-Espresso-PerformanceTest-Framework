@@ -2,11 +2,11 @@ Performance testing is an important weapon before launching any product in marke
 This is caused when there are either hardware issues or coding error.this cause a decrease of output under specific load conditions. Bottleneck is generally fixed by identifying cause and fixing poor process.
 
 # Some common bottlenecks are:
-Disk usage
-Memory utilization
-Network utilization
-Operating System limitations
-CPU utilization
+1. Disk usage
+2. Memory utilization
+3. Network utilization
+4. Operating System limitations
+5. CPU utilization
 
 # Espresso_NFR_Framework
 Espresso NFR Framework for extracting memory cpu and network usage data automatically by using google api.
