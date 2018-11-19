@@ -14,4 +14,9 @@ degraded and get info for culprit classes and thread by heap dump and method tra
 2. After ui test pass test then only we capture memory usage,cpu usage and network usage and send this data into db.
 3.Once we have data in db we can use in visualizing and reporting purpose.
 
+# Reporting:
+kindly refer below link
+https://medium.com/makemytrip-engineering/non-functional-metrics-evaluation-of-makemytrip-android-app-ebffb4bdf91c
+
+
 
