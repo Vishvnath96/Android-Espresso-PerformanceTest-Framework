@@ -4,3 +4,6 @@ By Using this Framework we can easily capture android performance stats like CPU
 Network(RX/TX for mobile and WiFi data usage) and Frozen frames info after every ui test run and 
 dump data into my sql data base for version1 and compare this data with previous version.It gives clear picture for if performance
 degraded and get info for culprit classes and thread by heap dump and method trace.
+
+# metrices to measure
+![](https://github.com/Vishvnath96/Android-Espresso-PerformanceTest-Framework/blob/master/mem.png)
