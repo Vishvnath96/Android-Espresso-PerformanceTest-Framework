@@ -1,3 +1,13 @@
+Performance testing is an important weapon before launching any product in market because customer reviews are highly based on performance. 
+This is caused when there are either hardware issues or coding error.this cause a decrease of output under specific load conditions. Bottleneck is generally fixed by identifying cause and fixing poor process.
+
+# Some common bottlenecks are:
+Disk usage
+Memory utilization
+Network utilization
+Operating System limitations
+CPU utilization
+
 # Espresso_NFR_Framework
 Espresso NFR Framework for extracting memory cpu and network usage data automatically by using google api.
 By Using this Framework we can easily capture android performance stats like CPU(user space,system space),Memory(Native,Dalvik,Private shared etc),
